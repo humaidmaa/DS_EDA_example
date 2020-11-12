@@ -23,18 +23,25 @@ jems2 %>%
 
 jems2 %>% 
   tail(5)
+
+#basic filtering:
+#are there any diamonds withVVS2 (clarity) & good (cut)
+jems %>% 
+  filter(clarity == "VVS2" & cut == "Good")
+
+
 #How many diamonds with a clarity of category “IF” are present in the data-set?
 jems2 %>% 
   filter(clarity == "IF") -> clarity_IF
 clarity_IF
 
 #What fraction of the total do they represent?
-nrow(clarity_IF)/ nrow(jems2)
+nrow(clarity)/nrow(jems2)
 
 #What proportion of the whole is made up of each category of clarity?
-jems2 %>% 
-  group_by(clarity) %>% 
-  summarise(mean(price))
+jems %>% 
+  group_by(jems$clarity) %>% 
+  mean()
 
 #What is the cheapest diamond price? 
 
@@ -55,17 +62,14 @@ ggplot(jems2, aes(x= carat, y=price)) +
 
 #applying log10 transformation to both the price and carat. 
 
-jems3 <- jems2 %>%
-  mutate(log10_price = log10(price),
-         log10_carat = log10(carat))
-ggplot(jems3, aes(x= log10_carat, y=log10_price)) +
-  geom_point() +
-  geom_smooth(method = "lm")
+price_log10 <- log10(jems$price)
+carat_log10 <- log10(jems$carat)
 
-#remove a column ??
-jems2 %>% 
-  select(-log_price)
-jems2$log10_carat
+jems$price_log10 <- price_log10
+jems$carat_log10 <- carat_log10
+jems
+
+
 #A scatter plot of the price of a diamond as described by the carat with log 10 applied
 ggplot(jems2, aes(x= log10_carat, y=log10_price)) + 
   geom_point()
@@ -73,6 +77,7 @@ ggplot(jems2, aes(x= log10_carat, y=log10_price)) +
 #to recreate a model that describes the relationship shown in the plot?
 
 jems2_lm <- lm(log10_price  ~  log10_carat, data= jems2)
+jems2_lm
 
 #geom_smooth analysis
 
@@ -80,4 +85,10 @@ ggplot(jems2, aes(x= log10_carat, y=log10_price)) +
   geom_point() +
   geom_smooth(method = "lm")
 
+#another plot
+ggplot(jems, aes(carat_log10, price_log10)) +
+  geom_point() +
+  geom_smooth(method = 'lm' ,
+              se = FALSE ,
+              colour = "red")
 

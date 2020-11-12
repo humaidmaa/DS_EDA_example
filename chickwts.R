@@ -17,7 +17,7 @@ chickwts %>%
 ggplot(chickwts, aes( x = feed, y =  weight )) + 
   geom_boxplot()
 
-#box plot of feed vs weight
+#jitter plot of feed vs weight
 ggplot(chickwts,aes(x=feed, y=weight)) + 
   geom_jitter() + 
   stat_summary(fun.data = mean_sdl,

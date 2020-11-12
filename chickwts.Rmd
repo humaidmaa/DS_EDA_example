@@ -9,6 +9,19 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(cache = TRUE, 
+                      message = FALSE,
+                      warning = FALSE,
+                      echo = FALSE,
+                      autodep = TRUE, 
+                      fig.align = "center")
+
+library(tidyverse)
+library(rio)
+library(scales)
+library(GGally)
+library(ggplot2)
+
 ```
 
 ```{r}
@@ -23,9 +36,9 @@ library(knitr)
 
 chickwts %>% 
   group_by(feed) %>%
-  summarise(n = length(feed),
-            Average = mean(weight), 
-            SD = sd(weight)) %>% kable()
+ summarise(n = n(),
+               average = mean(weight),
+               SD = sd(weight))
   
 ```
 **below plots gives more insights about food effects on chicken weights** 
@@ -56,8 +69,18 @@ measure the impact of food on chicken weight
 
 
 ```{r}
+chickwts_lm <- lm(weight ~ feed , data =  chickwts)
+chickwts_lm
+anova(chickwts_lm)
 
 ```
   
+```
+
+
+
+```{r}
+lm(formula = weight ~ feed, data = chickwts)
+
 ```
 

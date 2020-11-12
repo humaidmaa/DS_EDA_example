@@ -52,10 +52,7 @@ ggplot(chickwts,aes(x=feed, y=weight)) +
 measure the impact of food on chicken weight 
 
 
-```{r}
-analysis <- anova(chickwts_lm)
-analysis
-```
+
 
 
 ```{r}

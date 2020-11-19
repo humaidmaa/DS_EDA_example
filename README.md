@@ -1,5 +1,5 @@
 # programming_basics
-This repository contain projects for EDA using in R code.
+This repository contain projects for Exploratory data analysis which covers Descriptive Stats with visualizations using R
 
 1. Diamond Analysis
 

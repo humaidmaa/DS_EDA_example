@@ -1,0 +1,140 @@
+---
+title: "Case Study of Diamonds Dataset Analysis for EDA and Statistics"
+author: "Mansour Al-Humaid"
+date: "10/05/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache = TRUE, 
+                      message = FALSE,
+                      warning = FALSE,
+                      echo = FALSE,
+                      autodep = TRUE, 
+                      fig.align = "center")
+library(DT)
+library(tidyverse)
+library(rio)
+library(ggplot2)
+
+```
+
+# Analysis of Diamonds Dataset using EDA and Descriptive Statistics
+
+### Exploring Data by diamonds cuts with count and average price
+
+
+```{r}
+jems2 <- read_csv("data/diamonds.csv")
+datatable(diamonds %>%
+  group_by(cut) %>%
+    summarise(Count=length(cut),
+              Average_Price=mean(price),
+             ))
+
+```
+
+
+Diamonds Dataset Summary
+```{r}
+summary(diamonds)
+```
+
+
+
+
+
+### How many diamonds with a clarity of category “IF” are present in the data-set?What fraction of the total do they represent?
+```{r}
+jems2 %>% 
+  filter(clarity == "IF") -> clarity_IF
+
+jems2 %>%
+  filter(clarity == "IF") %>%
+  nrow()
+
+```
+
+
+### What proportion of the whole is made up of each category of clarity?
+```{r}
+jems2 %>% 
+  group_by(jems2$clarity) %>% 
+  mean()
+```
+
+
+### What is the cheapest diamond price? 
+```{r}
+min(jems2$price)
+```
+
+
+### What is the range of diamond prices?
+```{r}
+range(jems2$price)
+```
+
+
+
+### What is the average diamond price in each category of cut and color?
+```{r}
+jems2 %>% 
+  group_by(cut, color) %>% 
+  summarise(mean(price))
+```
+
+
+
+### A scatter plot of the price of a diamond as described by the carat
+```{r}
+ggplot(jems2, aes(x= carat, y=price)) + 
+  geom_point()
+```
+
+
+
+```{r}
+
+lm(jems2$carat ~ jems2$price, jems2)
+
+price_log10 <- log10(jems2$price)
+carat_log10 <- log10(jems2$carat)
+```
+
+
+
+
+
+### A scatter plot of the price of a diamond as described by the carat with log 10 applied
+```{r}
+ggplot(jems2, aes(x= carat_log10, y=price_log10)) + 
+  geom_point()
+```
+
+
+
+### to recreate a model that describes the relationship shown in the plot?
+```{r}
+jems2_lm <- lm(price_log10  ~  carat_log10, data= jems2)
+jems2_lm
+```
+
+
+
+
+### the price of a diamond as described by the carat with log 10 applied
+```{r}
+ggplot(jems2, aes(x= carat_log10, y=price_log10)) + 
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+
+### Boxplots showing prices by color
+```{r}
+ggplot(jems2, aes(x = color, y = price))+
+   geom_boxplot()
+
+```
+

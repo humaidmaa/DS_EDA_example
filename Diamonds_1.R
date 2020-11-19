@@ -6,6 +6,7 @@
 # load packages
 library(tidyverse)
 library(rio)
+library(ggplot2)
 
 jems2 <- read_csv("data/diamonds.csv")
 jems2
@@ -62,12 +63,10 @@ ggplot(jems2, aes(x= carat, y=price)) +
 
 #applying log10 transformation to both the price and carat. 
 
-price_log10 <- log10(jems$price)
-carat_log10 <- log10(jems$carat)
+lm(jems2$carat ~ jems2$price, jems2)
 
-jems$price_log10 <- price_log10
-jems$carat_log10 <- carat_log10
-jems
+price_log10 <- log10(jems2$price)
+carat_log10 <- log10(jems2$carat)
 
 
 #A scatter plot of the price of a diamond as described by the carat with log 10 applied
@@ -79,16 +78,15 @@ ggplot(jems2, aes(x= log10_carat, y=log10_price)) +
 jems2_lm <- lm(log10_price  ~  log10_carat, data= jems2)
 jems2_lm
 
-#geom_smooth analysis
+#the price of a diamond as described by the carat with log 10 applied
 
 ggplot(jems2, aes(x= log10_carat, y=log10_price)) + 
   geom_point() +
   geom_smooth(method = "lm")
 
-#another plot
-ggplot(jems, aes(carat_log10, price_log10)) +
-  geom_point() +
-  geom_smooth(method = 'lm' ,
-              se = FALSE ,
-              colour = "red")
+
+# Boxplots showing prices by color
+
+ggplot(jems2, aes(x = color, y = price))+
+  geom_boxplot()
 

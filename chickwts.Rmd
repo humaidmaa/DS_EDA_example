@@ -1,6 +1,6 @@
 ---
-title: "chickwts"
-author: "Mansour"
+title: "Using Chicken Weigts Study for EDA and Statistics"
+author: "Mansour Al-Humaid"
 date: "10/17/2020"
 output:
   html_document: default
@@ -8,29 +8,35 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(cache = TRUE, 
                       message = FALSE,
                       warning = FALSE,
                       echo = FALSE,
                       autodep = TRUE, 
                       fig.align = "center")
-
+library(DT)
 library(tidyverse)
-library(rio)
-library(scales)
-library(GGally)
-library(ggplot2)
+
 
 ```
+
+# Analysis of Chicken Weights by Comparing different food supplements effects on the growth rate of chickens
+
+This dataset was derived to study the impact of different food supplements on the growth rate of chickens.
+
+
+### Exploratory Data Analysis (EDA) & Statistics:
 
 ```{r}
-
-library(tidyverse)
-library(knitr)
+knitr::kable(summary(chickwts))
 ```
 
-*Compare different food effects on the growth rate of chickens*
+#### This data contains 2 variables.
+
+*1. Weight*: Referring to Chicken weight.
+
+*2. Feed*: Referring to Feed type.
+
 
 ```{r output="asis"  ,echo = FALSE}
 
@@ -41,7 +47,22 @@ chickwts %>%
                SD = sd(weight))
   
 ```
-**below plots gives more insights about food effects on chicken weights** 
+
+#### Descriptive Statistics:
+
+```{r}
+datatable(chickwts %>%
+  group_by(feed) %>%
+    summarise(Number_of_observations=length(feed),
+              Average_Weight=mean(weight),
+              SD=sd(weight)))
+```
+
+
+
+### Plots and Visulaization:
+
+Below plots gives more insights about food effects on chicken weights
 
 
 
@@ -59,7 +80,7 @@ ggplot(chickwts,aes(x=feed, y=weight)) +
   geom_jitter() + 
   stat_summary(fun.data = mean_sdl,
                fun.args = list(mult=1),
-               color="red")
+               color="blue")
 ```
 
 measure the impact of food on chicken weight 
